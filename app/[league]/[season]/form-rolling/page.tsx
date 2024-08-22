@@ -1,13 +1,9 @@
-// import { Cell, EmptyFixtureCell, FixtureCell } from "@/app/Fixture";
-import { PointsChart } from "@/components/charts/Points";
-import { Title } from "@/components/Title";
 import { LEAGUES } from "@/services/api-football/constants";
 import {
   convertFixturesToTeamMap,
   fetchFixturesForLeagueAndSeason,
 } from "@/services/api-football/fixtures";
-import { Grid } from "@visx/grid";
-import { cache, useState } from "react";
+import { cache } from "react";
 import Chart from "./Chart";
 
 const cached_fetchFixturesForLeagueAndSeason = cache(
