@@ -20,3 +20,52 @@ export function getRollingTotal(
 
   return rollingTotals;
 }
+
+export const getters = {
+  minutes: (statistic: Statistics) => statistic?.games.minutes ?? 0,
+  goals: (statistic: Statistics) => statistic?.goals.total ?? 0,
+  passes: (statistic: Statistics) => statistic?.passes.total ?? 0,
+  assists: (statistic: Statistics) => statistic?.goals.assists ?? 0,
+  goals_assists: (statistic: Statistics) =>
+    (statistic?.goals.total ?? 0) + (statistic?.goals.assists ?? 0),
+  shots: (statistic: Statistics) => statistic?.shots.total ?? 0,
+  shotsOnTarget: (statistic: Statistics) => statistic?.shots.on ?? 0,
+  shotsOffTarget: (statistic: Statistics) =>
+    (statistic?.shots.total ?? 0) - (statistic?.shots.on ?? 0) ?? 0,
+  fouls: (statistic: Statistics) => statistic?.fouls.committed ?? 0,
+  yellowCards: (statistic: Statistics) => statistic?.cards.yellow ?? 0,
+  redCards: (statistic: Statistics) => statistic?.cards.red ?? 0,
+  saves: (statistic: Statistics) => statistic?.goals.saves ?? 0,
+  offsides: (statistic: Statistics) => statistic?.offsides ?? 0,
+};
+
+export const max: Record<keyof typeof getters, number> = {
+  minutes: 95,
+  goals: 1.5,
+  assists: 1,
+  goals_assists: 2,
+  passes: 100,
+  shots: 6,
+  shotsOnTarget: 5,
+  shotsOffTarget: 5,
+  fouls: 5,
+  yellowCards: 1,
+  redCards: 1,
+  saves: 5,
+  offsides: 2,
+};
+export const displayNames: Record<keyof typeof getters, string> = {
+  minutes: "Minutes Played",
+  goals: "Goals",
+  assists: "Assists",
+  goals_assists: "Goals + Assists",
+  passes: "Passes",
+  shots: "Shots",
+  shotsOnTarget: "Shots on Target",
+  shotsOffTarget: "Shots off Target",
+  fouls: "Fouls Committed",
+  yellowCards: "Yellow Cards",
+  redCards: "Red Cards",
+  saves: "Saves",
+  offsides: "Offsides",
+};

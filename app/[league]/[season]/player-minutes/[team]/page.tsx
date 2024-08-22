@@ -13,6 +13,7 @@ import {
 } from "@/services/api-football/lineups";
 import clsx from "clsx";
 import { cache } from "react";
+import PlayerMinutesTable from "./Table";
 
 const fetchFixtures_cached = cache(fetchFixtures);
 
@@ -84,39 +85,7 @@ export default async function PlayerMinutesPage(props: {
   return (
     <div>
       <div>
-        <table className="text-sm">
-          <tbody>
-            {Object.entries(players)
-              .sort((a, b) =>
-                a[1]
-                  .split(" ")
-                  .reverse()[0]
-                  .localeCompare(b[1].split(" ").reverse()[0])
-              )
-              .map(([id, player]) => (
-                <tr key={id}>
-                  <td className="text-right pr-4">{player}</td>
-                  {Object.values(playerStats[id]).map((stats, idx) =>
-                    stats?.statistics[0].games.minutes ? (
-                      <GenericFixtureCell
-                        className={clsx({
-                          "bg-amber-300": stats?.statistics[0].games.substitute,
-                          "font-bold": stats?.statistics[0].games.minutes >= 70,
-                          "font-normal":
-                            stats?.statistics[0].games.minutes < 70,
-                        })}
-                        key={idx}
-                      >
-                        {stats?.statistics[0].games.minutes}
-                      </GenericFixtureCell>
-                    ) : (
-                      <EmptyFixtureCell key={idx} />
-                    )
-                  )}
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <PlayerMinutesTable players={players} playerStats={playerStats} />
       </div>
     </div>
   );
