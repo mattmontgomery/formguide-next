@@ -16,6 +16,7 @@ export default function Home() {
             {[
               ["form", "Form Guide"],
               ["form-rolling", "Form Guide Rolling"],
+              ["player-minutes", "Player Minutes"],
             ].map(([page, title]) => (
               <div key={page} className="grid grid-flow-row  gap-y-2">
                 <h2 className="text-lg font-bold">{title}</h2>
