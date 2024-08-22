@@ -28,6 +28,7 @@ export const LEAGUES = {
   it_serie_a: 135,
   it_serie_b: 136,
   it_serie_a_women: 139,
+  leagues_cup: 772,
 };
 
 export const ELIGIBLE_YEARS = [
@@ -74,4 +75,5 @@ export const LEAGUE_DISPLAY_NAMES: Record<string, string> = {
   it_serie_a: "Italy — Serie A",
   it_serie_b: "Italy — Serie B",
   it_serie_a_women: "Italy — Seria A Women",
+  leagues_cup: "Leagues Cup",
 };
