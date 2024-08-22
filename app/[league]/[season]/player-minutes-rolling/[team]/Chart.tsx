@@ -12,6 +12,8 @@ const getters = {
   goals: (statistic: Statistics) => statistic?.goals.total ?? 0,
   passes: (statistic: Statistics) => statistic?.passes.total ?? 0,
   assists: (statistic: Statistics) => statistic?.goals.assists ?? 0,
+  goals_assists: (statistic: Statistics) =>
+    (statistic?.goals.total ?? 0) + (statistic?.goals.assists ?? 0),
   shots: (statistic: Statistics) => statistic?.shots.total ?? 0,
   shotsOnTarget: (statistic: Statistics) => statistic?.shots.on ?? 0,
   shotsOffTarget: (statistic: Statistics) =>
@@ -26,8 +28,9 @@ const getters = {
 const max: Record<keyof typeof getters, number> = {
   minutes: 95,
   goals: 1.5,
-  passes: 100,
   assists: 1,
+  goals_assists: 2,
+  passes: 100,
   shots: 6,
   shotsOnTarget: 5,
   shotsOffTarget: 5,
@@ -40,8 +43,9 @@ const max: Record<keyof typeof getters, number> = {
 const displayNames: Record<keyof typeof getters, string> = {
   minutes: "Minutes Played",
   goals: "Goals",
-  passes: "Passes",
   assists: "Assists",
+  goals_assists: "Goals + Assists",
+  passes: "Passes",
   shots: "Shots",
   shotsOnTarget: "Shots on Target",
   shotsOffTarget: "Shots off Target",
