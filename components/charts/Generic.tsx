@@ -30,7 +30,7 @@ export function GenericChart(props: {
         yScale.range([height, 0]);
 
         return (
-          <svg width={width} height={height + 70}>
+          <svg width={width} height={height + 40}>
             <Group height={height}>
               <LinePath
                 data={values.map((value, i) => ({

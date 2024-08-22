@@ -1,3 +1,5 @@
+import { Statistics } from "./api-football/lineups";
+
 export function getRollingTotal(
   stats: Record<string, number[]>,
   periodLength: number = 5

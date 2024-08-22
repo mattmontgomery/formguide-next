@@ -115,7 +115,7 @@ export default function Chart({
               <tr key={id}>
                 <td className="text-right pr-4">{player}</td>
                 <td className="table-cell">
-                  <div className="h-16 py-2 mb-1">
+                  <div className="h-12 py-2 mb-0">
                     <GenericChart
                       maxValue={max[statistic] * periodLength}
                       periodLength={periodLength}
