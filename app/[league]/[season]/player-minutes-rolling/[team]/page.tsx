@@ -1,20 +1,8 @@
-import { GenericChart } from "@/components/charts/Generic";
-import {
-  Cell,
-  EmptyFixtureCell,
-  FixtureCell,
-  GenericFixtureCell,
-} from "@/components/Fixture";
+import {} from "@/components/Fixture";
 import { fetchFixtures, Fixture } from "@/services/api-football/fixtures";
-import {
-  fetchLineups,
-  Player,
-  PlayerStatistics,
-  Statistics,
-} from "@/services/api-football/lineups";
-import { getRollingTotal } from "@/services/stats";
-import clsx from "clsx";
+import { fetchLineups } from "@/services/api-football/lineups";
 import { cache } from "react";
+import Chart from "./Chart";
 
 const fetchFixtures_cached = cache(fetchFixtures);
 
@@ -63,7 +51,7 @@ export default async function PlayerMinutesPage(props: {
   );
 
   const { players } = lineupsByFixture.reduce(
-    (acc, { fixture, teamData }) => {
+    (acc, { teamData }) => {
       teamData[0].players.forEach((player) => {
         if (!acc.playerStats[player.player.id]) {
           acc.playerStats[player.player.id] = [];
@@ -85,20 +73,8 @@ export default async function PlayerMinutesPage(props: {
   const emptyFixtures = fixtures
     .filter((fixture) => fixture.fixture.status.long === "Match Finished")
     .reduce((acc, fixture) => ({ ...acc, [fixture.fixture.id]: null }), {});
-  // const emptyPlayerStats = Object.keys(players).reduce((acc, curr) => {...acc, [curr]: []});
-  const emptyPlayerStats = Object.keys(players).reduce(
-    (acc, player) => ({
-      ...acc,
-      [player]: emptyFixtures,
-    }),
-    {} as Record<string, Record<string, number>>
-  );
   const playerStats = lineupsByFixture.reduce((acc, { fixture, teamData }) => {
     teamData[0].players.forEach((player) => {
-      // if (!acc[player.player.id]) {
-      //   acc[player.player.id] = { ...emptyFixtures };
-      // }
-      // acc[player.player.id][fixture] = player.statistics[0].games.minutes ?? 0;
       acc.push({
         fixture,
         player: player.player.id,
@@ -124,36 +100,10 @@ export default async function PlayerMinutesPage(props: {
     }))
     .reduce((acc, curr) => ({ ...acc, ...curr }), {});
 
-  const rollingTotals = getRollingTotal(playerStatsAsArray, 5);
-
   return (
     <div>
       <div>
-        <table className="text-sm table w-full">
-          <tbody>
-            {Object.entries(players)
-              .sort((a, b) =>
-                a[1]
-                  .split(" ")
-                  .reverse()[0]
-                  .localeCompare(b[1].split(" ").reverse()[0])
-              )
-              .map(([id, player]) => (
-                <tr key={id}>
-                  <td className="text-right pr-4">{player}</td>
-                  <td className="table-cell">
-                    <div className="h-16 py-2 mb-4">
-                      <GenericChart
-                        maxValue={100 * 5}
-                        periodLength={5}
-                        values={rollingTotals[id]}
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Chart playerStatsAsArray={playerStatsAsArray} players={players} />
       </div>
     </div>
   );
