@@ -1,4 +1,4 @@
-export const LEAGUES = {
+export const LEAGUES: Record<string, number> = {
   mls: 253,
   nwsl: 254,
   mlsnp: 909,

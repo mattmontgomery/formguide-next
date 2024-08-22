@@ -25,10 +25,12 @@ export type Fixture = {
 
   teams: {
     home: {
+      id: number;
       name: string;
       winner: boolean;
     };
     away: {
+      id: number;
       name: string;
       winner: boolean;
     };
@@ -59,6 +61,28 @@ export async function fetchFixturesForLeagueAndSeason(
 ): Promise<Fixture[]> {
   return fetch(
     `https://api-football-v1.p.rapidapi.com/v3/fixtures?league=${LEAGUES[league]}&season=${season}`,
+    {
+      headers: {
+        "x-rapidapi-key": process.env.API_FOOTBALL_API_KEY ?? "",
+        "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+      },
+      next: {
+        revalidate: 60 * 60, // 1 hour
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => data.response);
+}
+export async function fetchFixtures(params: {
+  league: keyof typeof LEAGUES;
+  season: string;
+  team?: string;
+}): Promise<Fixture[]> {
+  return fetch(
+    `https://api-football-v1.p.rapidapi.com/v3/fixtures?league=${
+      LEAGUES[params.league]
+    }&season=${params.season}${params.team ? `&team=${params.team}` : ""}`,
     {
       headers: {
         "x-rapidapi-key": process.env.API_FOOTBALL_API_KEY ?? "",

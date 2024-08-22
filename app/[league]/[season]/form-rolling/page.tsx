@@ -1,7 +1,6 @@
 import {
   CACHED_LEAGUES,
   CACHED_YEARS,
-  ELIGIBLE_YEARS,
   LEAGUES,
 } from "@/services/api-football/constants";
 import {

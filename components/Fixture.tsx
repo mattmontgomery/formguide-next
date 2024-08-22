@@ -1,4 +1,6 @@
 import { Fixture } from "@/services/api-football/fixtures";
+import clsx from "clsx";
+import { PropsWithChildren } from "react";
 
 export function FixtureCell({
   fixture,
@@ -14,21 +16,33 @@ export function FixtureCell({
     ? "L"
     : "D";
   return (
-    <Cell
-      className={[
-        `${homeTeamResult === "W" && "bg-lime-500"}`,
-        `${homeTeamResult === "L" && "bg-red-300 "}`,
-        `${homeTeamResult === "D" && "bg-amber-300  "}`,
-        "min-w-4 px-1 border-solid border-[1px] h-6 font-bold ",
-      ]
-        .filter(Boolean)
-        .join(" ")}
+    <GenericFixtureCell
+      className={clsx({
+        "font-bold ": true,
+        "bg-lime-500": homeTeamResult === "W",
+        "bg-amber-300": homeTeamResult === "D",
+        "bg-red-300": homeTeamResult === "L",
+      })}
     >
       {homeTeamResult}
-    </Cell>
+    </GenericFixtureCell>
   );
 }
 
+export function GenericFixtureCell({
+  children,
+  className,
+}: PropsWithChildren<{
+  className: string;
+}>) {
+  return (
+    <Cell
+      className={clsx(className, "min-w-4 px-1 border-solid border-[1px] h-6")}
+    >
+      {children}
+    </Cell>
+  );
+}
 export function EmptyFixtureCell() {
   return (
     <Cell className="min-w-4 bg-zinc-200 border-solid border-[1px] border-zinc-300">
