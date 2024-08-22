@@ -50,60 +50,10 @@ export default async function PlayerMinutesPage(props: {
     )
   );
 
-  const { players } = lineupsByFixture.reduce(
-    (acc, { teamData }) => {
-      teamData[0].players.forEach((player) => {
-        if (!acc.playerStats[player.player.id]) {
-          acc.playerStats[player.player.id] = [];
-        }
-        if (!acc.players[player.player.id]) {
-          acc.players[player.player.id] = player.player.name;
-        }
-        acc.playerStats[player.player.id].push(
-          player.statistics[0].games.minutes ?? 0
-        );
-      });
-      return acc;
-    },
-    {
-      players: {} as Record<string, string>,
-      playerStats: {} as Record<string, number[]>,
-    }
-  );
-  const emptyFixtures = fixtures
-    .filter((fixture) => fixture.fixture.status.long === "Match Finished")
-    .reduce((acc, fixture) => ({ ...acc, [fixture.fixture.id]: null }), {});
-  const playerStats = lineupsByFixture.reduce((acc, { fixture, teamData }) => {
-    teamData[0].players.forEach((player) => {
-      acc.push({
-        fixture,
-        player: player.player.id,
-        stat: player.statistics[0].games.minutes ?? 0,
-      });
-    });
-    return acc;
-  }, [] as { fixture: number; player: number; stat: number }[]);
-
-  const playerStatsByPlayer = playerStats.reduce(
-    (acc, { fixture, player, stat }) => {
-      if (!acc[player]) {
-        acc[player] = { ...emptyFixtures };
-      }
-      acc[player][fixture] = stat;
-      return acc;
-    },
-    {} as Record<string, Record<string, number>>
-  );
-  const playerStatsAsArray = Object.entries(playerStatsByPlayer)
-    .map(([player, stats]) => ({
-      [player]: Object.values(stats).map((stat) => stat ?? 0),
-    }))
-    .reduce((acc, curr) => ({ ...acc, ...curr }), {});
-
   return (
     <div>
       <div>
-        <Chart playerStatsAsArray={playerStatsAsArray} players={players} />
+        <Chart fixtures={fixtures} lineupsByFixture={lineupsByFixture} />
       </div>
     </div>
   );
