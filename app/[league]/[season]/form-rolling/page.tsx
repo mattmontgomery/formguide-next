@@ -28,17 +28,12 @@ export default async function FormRollingPage({
   return <Chart fixturesByTeam={fixturesByTeam} />;
 }
 
-export function getStaticPaths() {
+export function generateStaticParams() {
   const years = CACHED_YEARS.map((year) =>
     CACHED_LEAGUES.map((league) => [year, league])
   ).flat();
-  return {
-    paths: years.map(([season, league]) => ({
-      params: {
-        league,
-        season: String(season),
-      },
-    })),
-    fallback: true,
-  };
+  return years.map(([season, league]) => ({
+    league,
+    season: String(season),
+  }));
 }
