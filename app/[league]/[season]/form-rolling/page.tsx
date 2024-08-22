@@ -1,4 +1,9 @@
-import { LEAGUES } from "@/services/api-football/constants";
+import {
+  CACHED_LEAGUES,
+  CACHED_YEARS,
+  ELIGIBLE_YEARS,
+  LEAGUES,
+} from "@/services/api-football/constants";
 import {
   convertFixturesToTeamMap,
   fetchFixturesForLeagueAndSeason,
@@ -21,4 +26,19 @@ export default async function FormRollingPage({
   );
   const fixturesByTeam = convertFixturesToTeamMap(fixtures);
   return <Chart fixturesByTeam={fixturesByTeam} />;
+}
+
+export function getStaticPaths() {
+  const years = CACHED_YEARS.map((year) =>
+    CACHED_LEAGUES.map((league) => [year, league])
+  ).flat();
+  return {
+    paths: years.map(([season, league]) => ({
+      params: {
+        league,
+        season: String(season),
+      },
+    })),
+    fallback: true,
+  };
 }

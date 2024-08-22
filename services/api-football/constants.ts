@@ -29,3 +29,17 @@ export const LEAGUES = {
   it_serie_b: 136,
   it_serie_a_women: 139,
 };
+
+export const ELIGIBLE_YEARS = [
+  2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
+];
+export const CACHED_YEARS = ELIGIBLE_YEARS.slice(0, 3);
+export const CACHED_LEAGUES = [
+  "epl",
+  "de_bundesliga",
+  "sp_la_liga",
+  "it_serie_a",
+  "fr_ligue_1",
+  "mls",
+  "nwsl",
+];

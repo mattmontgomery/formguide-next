@@ -64,6 +64,9 @@ export async function fetchFixturesForLeagueAndSeason(
         "x-rapidapi-key": process.env.API_FOOTBALL_API_KEY ?? "",
         "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
       },
+      next: {
+        revalidate: 60 * 60, // 1 hour
+      },
     }
   )
     .then((res) => res.json())
