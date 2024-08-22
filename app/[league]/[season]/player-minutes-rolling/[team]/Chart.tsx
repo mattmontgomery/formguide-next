@@ -28,7 +28,7 @@ const max: Record<keyof typeof getters, number> = {
   goals: 1.5,
   passes: 100,
   assists: 1,
-  shots: 10,
+  shots: 6,
   shotsOnTarget: 5,
   shotsOffTarget: 5,
   fouls: 5,

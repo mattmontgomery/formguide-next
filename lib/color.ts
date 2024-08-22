@@ -4,7 +4,8 @@ export function getColor(value: number, max: number = 15): string {
   const endColor = "#00FF00";
 
   // Calculate the percentage of the value within the range
-  const percentage = (value - min) / (max - min);
+  const _percentage = (value - min) / (max - min);
+  const percentage = value > max ? max : value < min ? min : _percentage;
 
   // Interpolate the color based on the percentage
   const red = Math.round(
