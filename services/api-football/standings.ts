@@ -31,7 +31,6 @@ export async function fetchStandings(params: {
   }[]
 > {
   const leagueCode = LEAGUES[params.league];
-  console.log(leagueCode);
   if (!leagueCode) {
     return [];
   }

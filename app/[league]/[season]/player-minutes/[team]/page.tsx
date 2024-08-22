@@ -64,8 +64,6 @@ export default async function PlayerMinutesPage(props: {
 
   const { players, playerStats } = lineupsByFixture.reduce(
     (acc, { fixture, teamData }) => {
-      console.log(fixture);
-      // console.log(fixtureId, fixture[0]);
       teamData[0].players.forEach((player) => {
         if (!acc.playerStats[player.player.id]) {
           acc.playerStats[player.player.id] = { ...emptyFixtures };
@@ -73,7 +71,6 @@ export default async function PlayerMinutesPage(props: {
         if (!acc.players[player.player.id]) {
           acc.players[player.player.id] = player.player.name;
         }
-        console.log(player);
         acc.playerStats[player.player.id][fixture] = player;
       });
       return acc;
