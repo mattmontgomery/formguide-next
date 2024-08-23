@@ -34,6 +34,16 @@ export default function PlayerMinutesTable({
         ))}
       </form>
       <table className="text-sm">
+        <thead>
+          <tr>
+            <td></td>
+            {Object.keys(playerStats).map((fixture, idx) => (
+              <td key={idx} className="text-center">
+                {idx + 1}
+              </td>
+            ))}
+          </tr>
+        </thead>
         <tbody>
           {Object.entries(players)
             .sort((a, b) =>
