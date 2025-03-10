@@ -32,7 +32,7 @@ export const LEAGUES: Record<string, number> = {
 };
 
 export const ELIGIBLE_YEARS = [
-  2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
+  2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014,
 ];
 export const CACHED_YEARS = ELIGIBLE_YEARS.slice(0, 3);
 export const CACHED_LEAGUES = [
