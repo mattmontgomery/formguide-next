@@ -32,26 +32,35 @@ export default function Chart({
       },
       {
         players: {} as Record<string, string>,
-      }
+      },
     );
   }, [lineupsByFixture]);
   const emptyFixtures = fixtures
     .filter((fixture) => fixture.fixture.status.long === "Match Finished")
-    .reduce((acc, fixture) => ({ ...acc, [fixture.fixture.id]: null }), {});
+    .reduce(
+      (acc, fixture) => {
+        acc[fixture.fixture.id] = null;
+        return acc;
+      },
+      {} as Record<number, null>,
+    );
   const playerStats = useMemo(
     () =>
-      lineupsByFixture.reduce((acc, { fixture, teamData }) => {
-        teamData[0].players.forEach((player) => {
-          console.log(player.statistics[0]);
-          acc.push({
-            fixture,
-            player: player.player.id,
-            stat: getters[statistic](player.statistics[0]),
+      lineupsByFixture.reduce(
+        (acc, { fixture, teamData }) => {
+          teamData[0].players.forEach((player) => {
+            console.log(player.statistics[0]);
+            acc.push({
+              fixture,
+              player: player.player.id,
+              stat: getters[statistic](player.statistics[0]),
+            });
           });
-        });
-        return acc;
-      }, [] as { fixture: number; player: number; stat: number }[]),
-    [lineupsByFixture, statistic]
+          return acc;
+        },
+        [] as { fixture: number; player: number; stat: number }[],
+      ),
+    [lineupsByFixture, statistic],
   );
 
   const playerStatsByPlayer = playerStats.reduce(
@@ -62,16 +71,18 @@ export default function Chart({
       acc[player][fixture] = stat;
       return acc;
     },
-    {} as Record<string, Record<string, number>>
+    {} as Record<string, Record<string, number | null>>,
   );
   const playerStatsAsArray = Object.entries(playerStatsByPlayer)
     .map(([player, stats]) => ({
       [player]: Object.values(stats).map((stat) => stat ?? 0),
     }))
-    .reduce((acc, curr) => ({ ...acc, ...curr }), {});
+    .reduce((acc, curr) => {
+      return { ...acc, ...curr };
+    }, {});
   const rollingTotals = useMemo(
     () => getRollingTotal(playerStatsAsArray, Number(periodLength)),
-    [playerStatsAsArray, periodLength]
+    [playerStatsAsArray, periodLength],
   );
   return (
     <div>
@@ -109,7 +120,7 @@ export default function Chart({
               a[1]
                 .split(" ")
                 .reverse()[0]
-                .localeCompare(b[1].split(" ").reverse()[0])
+                .localeCompare(b[1].split(" ").reverse()[0]),
             )
             .map(([id, player]) => (
               <tr key={id}>

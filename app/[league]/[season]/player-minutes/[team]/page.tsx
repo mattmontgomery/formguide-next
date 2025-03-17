@@ -19,7 +19,7 @@ const fetchFixtures_cached = cache(fetchFixtures);
 
 async function fetchLineupsByFixture(
   teamId: string,
-  fixtures: Fixture[]
+  fixtures: Fixture[],
 ): Promise<
   {
     fixture: number;
@@ -35,7 +35,7 @@ async function fetchLineupsByFixture(
           fixture: fixture.fixture.id,
         }),
       };
-    })
+    }),
   );
 }
 
@@ -56,18 +56,26 @@ export default async function PlayerMinutesPage(props: {
   const lineupsByFixture = await fetchLineupsByFixture_cached(
     props.params.team,
     fixtures.filter(
-      (fixture) => fixture.fixture.status.long === "Match Finished"
-    )
+      (fixture) => fixture.fixture.status.long === "Match Finished",
+    ),
   );
   const emptyFixtures = fixtures
     .filter((fixture) => fixture.fixture.status.long === "Match Finished")
-    .reduce((acc, fixture) => ({ ...acc, [fixture.fixture.id]: null }), {});
+    .reduce(
+      (acc, fixture) => {
+        acc[fixture.fixture.id] = null;
+        return acc;
+      },
+      {} as Record<number, any>,
+    );
 
   const { players, playerStats } = lineupsByFixture.reduce(
     (acc, { fixture, teamData }) => {
       teamData[0].players.forEach((player) => {
         if (!acc.playerStats[player.player.id]) {
-          acc.playerStats[player.player.id] = { ...emptyFixtures };
+          acc.playerStats[player.player.id] = {
+            ...emptyFixtures,
+          };
         }
         if (!acc.players[player.player.id]) {
           acc.players[player.player.id] = player.player.name;
@@ -79,7 +87,7 @@ export default async function PlayerMinutesPage(props: {
     {
       players: {} as Record<string, string>,
       playerStats: {} as Record<string, Record<string, PlayerStatistics>>,
-    }
+    },
   );
 
   return (

@@ -3,8 +3,15 @@ import {
   LEAGUE_DISPLAY_NAMES,
   LEAGUES,
 } from "@/services/api-football/constants";
-import Image from "next/image";
 import Link from "next/link";
+
+const PAGES = [
+  ["form", "Form Guide"],
+  ["form-rolling", "Form Guide Rolling"],
+  ["player-minutes", "Player Minutes"],
+  ["player-minutes-rolling", "Player Minutes Rolling"],
+  ["substitutions", "Substitutions"],
+];
 
 export default function Home() {
   return (
@@ -13,12 +20,7 @@ export default function Home() {
         {CACHED_YEARS.map((year) => (
           <div key={year} className="grid grid-flow-row gap-y-4">
             <h1 className="text-2xl font-bold">{year}</h1>
-            {[
-              ["form", "Form Guide"],
-              ["form-rolling", "Form Guide Rolling"],
-              ["player-minutes", "Player Minutes"],
-              ["player-minutes-rolling", "Player Minutes Rolling"],
-            ].map(([page, title]) => (
+            {PAGES.map(([page, title]) => (
               <div key={page} className="grid grid-flow-row  gap-y-2">
                 <h2 className="text-lg font-bold">{title}</h2>
                 <div className="columns-4">

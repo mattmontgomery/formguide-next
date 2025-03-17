@@ -15,33 +15,44 @@ export default function Chart({
   const [periodLength, setPeriodLength] = useState<number>(5);
   const rollingPointsByTeam = useMemo(
     () =>
-      Object.keys(fixturesByTeam).reduce((acc, team) => {
-        const fixtures = fixturesByTeam[team];
-        const pointsPerMatch = fixtures
-          .filter((fixture) => fixture.fixture.status.long === "Match Finished")
-          .map((fixture) => {
-            const teamIsHomeTeam = fixture.teams.home.name === team;
-            const homeTeamResult = fixture.teams[
-              teamIsHomeTeam ? "home" : "away"
-            ].winner
-              ? "W"
-              : fixture.teams[teamIsHomeTeam ? "away" : "home"].winner
-              ? "L"
-              : "D";
-            return homeTeamResult === "W" ? 3 : homeTeamResult === "D" ? 1 : 0;
-          });
+      Object.keys(fixturesByTeam).reduce(
+        (acc, team) => {
+          const fixtures = fixturesByTeam[team];
+          const pointsPerMatch = fixtures
+            .filter(
+              (fixture) => fixture.fixture.status.long === "Match Finished",
+            )
+            .map((fixture) => {
+              const teamIsHomeTeam = fixture.teams.home.name === team;
+              const homeTeamResult = fixture.teams[
+                teamIsHomeTeam ? "home" : "away"
+              ].winner
+                ? "W"
+                : fixture.teams[teamIsHomeTeam ? "away" : "home"].winner
+                  ? "L"
+                  : "D";
+              return homeTeamResult === "W"
+                ? 3
+                : homeTeamResult === "D"
+                  ? 1
+                  : 0;
+            });
 
-        const rollingPoints = [];
-        for (let i = 0; i <= pointsPerMatch.length - periodLength; i++) {
-          const periodMatchPoints = pointsPerMatch
-            .slice(i, i + periodLength)
-            .reduce((sum: number, points) => sum + points, 0);
-          rollingPoints.push(periodMatchPoints);
-        }
+          const rollingPoints = [];
+          for (let i = 0; i <= pointsPerMatch.length - periodLength; i++) {
+            const periodMatchPoints = pointsPerMatch
+              .slice(i, i + periodLength)
+              .reduce((sum: number, points) => sum + points, 0);
+            rollingPoints.push(periodMatchPoints);
+          }
 
-        return { ...acc, [team]: rollingPoints };
-      }, {} as Record<string, number[]>),
-    [fixturesByTeam, periodLength]
+          acc[team] = rollingPoints;
+
+          return acc;
+        },
+        {} as Record<string, number[]>,
+      ),
+    [fixturesByTeam, periodLength],
   );
   return (
     <div className="grid grid-flow-row gap-y-4">
